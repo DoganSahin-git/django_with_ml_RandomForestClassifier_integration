@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Iris Classifier</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 480px; margin: 3rem auto; padding: 0 1rem; }
+    label { display: block; margin-top: .8rem; font-weight: 600; }
+    input { width: 100%; padding: .5rem; box-sizing: border-box; }
+    button { margin-top: 1.2rem; padding: .6rem 1.2rem; cursor: pointer; }
+    .result { margin-top: 1.5rem; padding: 1rem; background: #eef6ee; border-radius: 8px; }
+    .errorlist { color: #b00020; padding-left: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Iris Species Predictor</h1>
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }} {{ field.errors }}
+    {% endfor %}
+    <button type="submit">Predict</button>
+  </form>
+
+  {% if result %}
+    <div class="result">
+      <h2>{{ result.species|title }}</h2>
+      <ul>
+        {% for name, p in result.probabilities.items %}
+          <li>{{ name }}: {{ p }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</body>
+</html>
